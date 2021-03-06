@@ -2,14 +2,23 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.sql.*;
+
 
 public class Server {
+    private static Connection connection;
+    private static Statement statement;
+
 
     private static final int DEFAULT_PORT = 8189;
 
     private ConcurrentLinkedDeque<ClientHandler> clients;
 
-    public Server(int port) {
+
+    public Server(int port) throws ClassNotFoundException {
+        if (!dbConnect()) {
+            throw new RuntimeException("Не удалось подключиться к БД!");
+        }
         clients = new ConcurrentLinkedDeque<>();
         try (ServerSocket server = new ServerSocket(port)) {
             System.out.println("[DEBUG] server started on port: " + port);
@@ -22,6 +31,9 @@ public class Server {
             }
         } catch (Exception e) {
             System.err.println("Server was broken");
+        } finally {
+            dbDisconnect();
+            System.out.println("DB connection broken");
         }
     }
 
@@ -66,7 +78,7 @@ public class Server {
         return separated[0];
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
         int port = -1;
         if (args !=  null && args.length == 1) {
             port = Integer.parseInt(args[0]);
@@ -76,5 +88,38 @@ public class Server {
         }
         new Server(port);
 
+    }
+
+    public static boolean dbConnect(){
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:server/chatDB.db");
+            statement = connection.createStatement();
+            return true;
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void dbDisconnect(){
+        try {
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    public static Statement getStatement() {
+        return statement;
     }
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="180.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AuthController">
+   <children>
+      <TextField fx:id="login" layoutX="25.0" layoutY="56.0" prefWidth="353.0" promptText="Username" />
+      <TextField fx:id="password" layoutX="25.0" layoutY="100.0" prefWidth="353.0" promptText="Password" />
+      <Button fx:id="logButton" layoutX="288.0" layoutY="137.0" mnemonicParsing="false" onAction="#attemptLogin" prefHeight="27.0" prefWidth="90.0" text="Login" />
+      <Button fx:id="regButton" layoutX="288.0" layoutY="137.0" mnemonicParsing="false" onAction="#attemptRegister" prefHeight="27.0" prefWidth="90.0" text="Register" visible="false" />
+      <Text fx:id="alertText" fill="#e80d0d" layoutX="25.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="353.0" />
+      <Hyperlink fx:id="logSelector" layoutX="25.0" layoutY="137.0" onAction="#logChange" text="Not registered?" underline="true" />
+      <Hyperlink fx:id="regSelector" layoutX="25.0" layoutY="137.0" onAction="#regChange" text="Already a member?" underline="true" visible="false" />
+   </children>
+</AnchorPane>

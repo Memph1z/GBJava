@@ -1,6 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class Network {
@@ -43,5 +41,19 @@ public class Network {
         out.close();
         in.close();
         socket.close();
+    }
+
+    public void login(String login, String encPass) throws IOException{
+        String message = "/log " + login + " " + encPass;
+        System.out.println(message);
+        out.writeUTF(message);
+        out.flush();
+    }
+
+    public void register(String login, String encPass) throws IOException{
+        String message = "/reg " + login + " " + encPass;
+        System.out.println(message);
+        out.writeUTF(message);
+        out.flush();
     }
 }
